@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
             when{
                 nome.isEmpty() -> {
-                    mensagem(it, "Coloque o seu nome!")
+                    mensagem(it, "O nome não pode estar vazio!")
                 }senha.isEmpty() ->{
                     mensagem(it, "Preencha a senha!")
                 }senha.length <=5 -> {
