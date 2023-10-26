@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.cortecerto.databinding.ServicosItemBinding
 import com.example.cortecerto.model.Servicos
 
-class ServicosAdapter (private val context:Context, private val listaServicos: MutableList<Servicos> ):
+class ServicosAdapter (private val context: Context, private val listaServicos: MutableList<Servicos> ):
     RecyclerView.Adapter<ServicosAdapter.ServicosViewHolder>() {
 
 
@@ -23,7 +23,7 @@ class ServicosAdapter (private val context:Context, private val listaServicos: M
         holder.txtServicos.text = listaServicos[position].nome
     }
     inner class ServicosViewHolder(binding: ServicosItemBinding): RecyclerView.ViewHolder(binding.root){
-        val imgServicos = binding.imgServicos
+        val imgServicos = binding.imgServico
         val txtServicos = binding.txtTituloServicos
 
 
