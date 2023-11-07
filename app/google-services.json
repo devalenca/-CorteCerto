@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "628262553437",
+    "project_id": "cortecerto-63a74",
+    "storage_bucket": "cortecerto-63a74.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:628262553437:android:798fdb32ca039287010ab4",
+        "android_client_info": {
+          "package_name": "com.example.cortecerto"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4aA3FZ1w7psM0SB1BReoZOP2e-G_WFWY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
