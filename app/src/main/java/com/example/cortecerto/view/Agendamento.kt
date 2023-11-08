@@ -90,7 +90,6 @@ class Agendamento : AppCompatActivity() {
                 }
                 else -> {
                     mensagem(it, "Escolha um barbeiro!", "#FF0000")
-
                 }
             }
         }

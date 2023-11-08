@@ -17,11 +17,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.cortecerto.databinding.ActivityMainBinding
 import com.example.cortecerto.ui.theme.CorteCertoTheme
 import com.example.cortecerto.view.Home
+import com.example.cortecerto.view.Recuperacao
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityMainBinding
+    private val auth = FirebaseAuth.getInstance()
+    val db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,22 +36,31 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         binding.btnLogin.setOnClickListener{
-
-            val nome = binding.editNome.text.toString()
+            val email = binding.editEmail.text.toString()
             val senha = binding.editSenha.text.toString()
 
             when{
-                nome.isEmpty() -> {
-                    mensagem(it, "O nome não pode estar vazio!")
+                email.isEmpty() -> {
+                    mensagem(it, "O e-mail não pode estar vazio!")
                 }senha.isEmpty() ->{
                     mensagem(it, "Preencha a senha!")
                 }senha.length <=5 -> {
                     mensagem(it, "A senha precisa ter pelo menos 6 caracteres!")
                 }else -> {
-                    navegarPraHome(nome)
+                auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener{ login ->
+                    if (login.isSuccessful){
+                        mensagem(it, "Login realizado com sucesso!")
+                        navegar(Intent(this, Home::class.java))
+                        }
+                    }
                 }
-
             }
+        }
+        binding.btnRegistro.setOnClickListener{
+            navegarPraRegistro();
+        }
+        binding.recuperarSenha.setOnClickListener{
+            navegar(Intent(this, Recuperacao::class.java));
         }
     }
     private fun mensagem(view: View, mensagem: String) {
@@ -56,9 +70,15 @@ class MainActivity : AppCompatActivity() {
         snackbar.show()
     }
 
-    private fun navegarPraHome(nome: String){
+   private fun navegar(intent: Intent){
+       startActivity(intent)
+    }
+    private fun navegarPraHome(){
         val intent = Intent(this, Home::class.java)
-        intent.putExtra("nome", nome)
+        startActivity(intent)
+    }
+        private fun navegarPraRegistro(){
+        val intent = Intent(this, Cadastro::class.java)
         startActivity(intent)
     }
 }

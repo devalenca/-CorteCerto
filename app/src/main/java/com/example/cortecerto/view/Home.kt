@@ -8,22 +8,29 @@ import com.example.cortecerto.R
 import com.example.cortecerto.adapter.ServicosAdapter
 import com.example.cortecerto.databinding.ActivityHomeBinding
 import com.example.cortecerto.model.Servicos
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class Home : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private lateinit var servicosAdapter: ServicosAdapter
     private val listaServicos: MutableList<Servicos> = mutableListOf()
-
+    val mAuth = FirebaseAuth.getInstance()
+    val db = FirebaseFirestore.getInstance()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate((layoutInflater))
         setContentView(binding.root)
 
         supportActionBar?.hide()
-        val nome = intent.extras?.getString("nome")
 
-        binding.txtNomeUsuario.text = "Bem-vindo(a), $nome"
+
+        getNomeUser { nome ->
+            // Use a variável nome aqui
+           binding.txtNomeUsuario.text = "Bem-vindo(a), $nome"
+        }
+
         val recyclerViewServicos = binding.recyclerViewServicos
         recyclerViewServicos.layoutManager = GridLayoutManager(this, 2)
         servicosAdapter = ServicosAdapter(this, listaServicos)
@@ -33,10 +40,37 @@ class Home : AppCompatActivity() {
 
         binding.btnAgendar.setOnClickListener{
             val intent = Intent(this, Agendamento::class.java)
-            intent.putExtra("nome", nome)
+            getNomeUser { nome ->
+                // Use a variável nome aqui
+                intent.putExtra("nome", nome)
+            }
             startActivity(intent)
         }
+    }
 
+    private fun getNomeUser(callback: (String) -> Unit) {
+        val currentUser = mAuth.currentUser
+        if (currentUser != null) {
+            val uid = currentUser.uid
+
+            // Consulte o Firestore para obter os dados do usuário atual
+            db.collection("usuarios").document(uid).get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        val nome = document.getString("nome")
+                        if (nome != null) {
+                            // Chame o callback com o nome
+                            callback(nome)
+                        }
+                    } else {
+                        println("Documento não existe")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    println("Erro ao recuperar dados: $exception")
+                }
+
+        }
     }
     private fun getServicos(){
         val servico1 = Servicos(R.drawable.img1, "Corte de cabelo")
