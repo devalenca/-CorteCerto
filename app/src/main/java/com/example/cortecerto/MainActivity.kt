@@ -46,12 +46,14 @@ class MainActivity : AppCompatActivity() {
                     mensagem(it, "Preencha a senha!")
                 }senha.length <=5 -> {
                     mensagem(it, "A senha precisa ter pelo menos 6 caracteres!")
-                }else -> {
+                }else ->{
                 auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener{ login ->
                     if (login.isSuccessful){
                         mensagem(it, "Login realizado com sucesso!")
                         navegar(Intent(this, Home::class.java))
-                        }
+                    } else {
+                        mensagem(it, "Email ou senha incorretos")
+                    }
                     }
                 }
             }
