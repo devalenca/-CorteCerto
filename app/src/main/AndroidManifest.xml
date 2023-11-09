@@ -18,6 +18,11 @@
             android:label="@string/title_activity_cadastro"
             android:theme="@style/Theme.CorteCerto" />
         <activity
+            android:name=".view.Recuperacao"
+            android:exported="false"
+            android:label="Recuperação"
+            android:theme="@style/Theme.CorteCerto"/>
+        <activity
             android:name=".view.Agendamento"
             android:exported="false" />
         <activity
