@@ -4,18 +4,8 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.cortecerto.databinding.ActivityMainBinding
-import com.example.cortecerto.ui.theme.CorteCertoTheme
 import com.example.cortecerto.view.Home
 import com.example.cortecerto.view.Recuperacao
 import com.google.android.material.snackbar.Snackbar
@@ -59,7 +49,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.btnRegistro.setOnClickListener{
-            navegarPraRegistro();
+            navegar(Intent(this, Cadastro::class.java))
         }
         binding.recuperarSenha.setOnClickListener{
             navegar(Intent(this, Recuperacao::class.java));
@@ -74,14 +64,6 @@ class MainActivity : AppCompatActivity() {
 
    private fun navegar(intent: Intent){
        startActivity(intent)
-    }
-    private fun navegarPraHome(){
-        val intent = Intent(this, Home::class.java)
-        startActivity(intent)
-    }
-        private fun navegarPraRegistro(){
-        val intent = Intent(this, Cadastro::class.java)
-        startActivity(intent)
     }
 }
 
