@@ -2,6 +2,8 @@
 
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
@@ -10,8 +12,6 @@
 
     <LinearLayout
 
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -70,6 +70,8 @@
                 android:layout_margin="10dp" />
         </androidx.cardview.widget.CardView>
 
+
+
         <TimePicker
             android:id="@+id/timePicker"
             android:layout_width="match_parent"
@@ -77,14 +79,73 @@
             android:background="@color/white"
             android:timePickerMode="spinner" />
 
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginEnd="20dp">
+
+        <CheckBox
+            android:id="@+id/domicilio"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:checked="false" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:text="Deseja atendimento a domicílio?"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/editEndereco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:gravity="left"
+                android:text="Insira seu endereço:"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+
+            <EditText
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                app:cornerRadius="15dp" />
+
+
+        </LinearLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="Escolha um profissional"
-            android:textSize="18sp"
             android:textColor="@color/white"
-            android:textStyle="bold"
-            android:layout_margin="20dp" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <LinearLayout
 

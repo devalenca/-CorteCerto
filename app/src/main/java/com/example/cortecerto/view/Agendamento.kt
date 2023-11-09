@@ -4,6 +4,8 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.LinearLayout
+import androidx.core.view.isVisible
 import com.example.cortecerto.databinding.ActivityAgendamentoBinding
 import com.google.android.material.snackbar.Snackbar
 import java.util.Calendar
@@ -91,6 +93,17 @@ class Agendamento : AppCompatActivity() {
                 else -> {
                     mensagem(it, "Escolha um barbeiro!", "#FF0000")
                 }
+            }
+        }
+
+        val editEndereco = binding.editEndereco
+        val atendimentoDomicilio = binding.domicilio
+
+        atendimentoDomicilio.setOnCheckedChangeListener{buttonView, isChecked ->
+            if (isChecked) {
+                editEndereco.visibility = View.VISIBLE
+            } else {
+                editEndereco.visibility = View.GONE
             }
         }
     }
