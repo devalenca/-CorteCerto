@@ -4,13 +4,17 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cortecerto.databinding.ActivityMainBinding
 import com.example.cortecerto.view.Home
 import com.example.cortecerto.view.Recuperacao
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import android.os.Handler
+import android.os.Looper
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         binding.btnLogin.setOnClickListener{
+            val delayMillis = 1500 // 2000 milissegundos = 1,5 segundos
             val email = binding.editEmail.text.toString()
             val senha = binding.editSenha.text.toString()
 
@@ -40,7 +45,10 @@ class MainActivity : AppCompatActivity() {
                 auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener{ login ->
                     if (login.isSuccessful){
                         mensagem(it, "Login realizado com sucesso!")
-                        navegar(Intent(this, Home::class.java))
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            // Código a ser executado após o atraso
+                            navegar(Intent(this, Home::class.java))
+                        }, delayMillis.toLong())
                     } else {
                         mensagem(it, "Email ou senha incorretos")
                     }
@@ -60,6 +68,14 @@ class MainActivity : AppCompatActivity() {
         snackbar.setBackgroundTint(Color.parseColor("#FF0000"))
         snackbar.setTextColor(Color.parseColor("#FFFFFF"))
         snackbar.show()
+    }
+    override fun onStart() {
+        super.onStart()
+
+        val usuarioAtual = FirebaseAuth.getInstance().currentUser
+        if (usuarioAtual != null) {
+            navegar(Intent(this, Home::class.java))
+        }
     }
 
    private fun navegar(intent: Intent){

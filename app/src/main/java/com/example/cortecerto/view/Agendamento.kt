@@ -7,12 +7,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.view.isVisible
 import com.example.cortecerto.databinding.ActivityAgendamentoBinding
 import com.google.android.material.snackbar.Snackbar
 import java.util.Calendar
 import com.google.firebase.firestore.FirebaseFirestore;
-
+import android.os.Handler
+import android.os.Looper
 class Agendamento : AppCompatActivity() {
 
     private lateinit var binding: ActivityAgendamentoBinding
@@ -124,6 +126,7 @@ class Agendamento : AppCompatActivity() {
     }
 
     private fun salvarAgendamento(view: View, cliente: String, barbeiro: String, data: String, hora: String, servico: String){
+        val delayMillis = 1500 // 1500 milissegundos = 1,5 segundos
 
         val db = FirebaseFirestore.getInstance()
 
@@ -137,10 +140,13 @@ class Agendamento : AppCompatActivity() {
 
         db.collection("agendamento").document(cliente).set(dadosUsuario).addOnCompleteListener{
             mensagem(view, "Agendamento realizado com sucesso!", "#FF03DAC5")
+            Handler(Looper.getMainLooper()).postDelayed({
+                navegar(Intent(this, Home::class.java))
+            }, delayMillis.toLong())
         }.addOnFailureListener{
             mensagem(view, "Erro no servidor", "#FF0000")
         }
-        navegar(Intent(this, Home::class.java))
+
     }
     private fun navegar(intent: Intent){
         startActivity(intent)

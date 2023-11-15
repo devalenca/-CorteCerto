@@ -66,7 +66,14 @@ class Home : AppCompatActivity() {
                 intent.putExtra("nome", nome)
             }
             startActivity(intent)
-
+        }
+        binding.btnDeslogar.setOnClickListener{
+            try {
+                mAuth.signOut()
+                finish();
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
