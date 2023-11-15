@@ -77,6 +77,7 @@ class Agendamento : AppCompatActivity() {
             val barbeiro1 = binding.barbeiro1
             val barbeiro2 = binding.barbeiro2
             val barbeiro3 = binding.barbeiro3
+            val endereco = binding.endereco.text.toString()
 
             when {
                 hora.isEmpty() -> {
@@ -92,13 +93,13 @@ class Agendamento : AppCompatActivity() {
 
                 }
                 barbeiro1.isChecked && data.isNotEmpty() && hora.isNotEmpty() -> {
-                    salvarAgendamento(it, nome!!, "Jefferson",data,hora, servico!!)
+                    salvarAgendamento(it, nome, "Jefferson",endereco,data,hora, servico!!)
                 }
                 barbeiro2.isChecked && data.isNotEmpty() && hora.isNotEmpty() -> {
-                    salvarAgendamento(it, nome!!, "Elizeu",data,hora, servico!!)
+                    salvarAgendamento(it, nome!!, "Elizeu",endereco,data,hora, servico!!)
                 }
                 barbeiro3.isChecked && data.isNotEmpty() && hora.isNotEmpty() -> {
-                    salvarAgendamento(it, nome!!, "Luiza",data,hora, servico!!)
+                    salvarAgendamento(it, nome!!, "Luiza",endereco,data,hora, servico!!)
                 }
                 else -> {
                     mensagem(it, "Escolha um barbeiro!", "#FF0000")
@@ -125,7 +126,7 @@ class Agendamento : AppCompatActivity() {
         snackbar.show()
     }
 
-    private fun salvarAgendamento(view: View, cliente: String, barbeiro: String, data: String, hora: String, servico: String){
+    private fun salvarAgendamento(view: View, cliente: String, barbeiro: String, domicilio:String, data: String, hora: String, servico: String){
         val delayMillis = 1500 // 1500 milissegundos = 1,5 segundos
 
         val db = FirebaseFirestore.getInstance()
@@ -133,13 +134,14 @@ class Agendamento : AppCompatActivity() {
         val dadosUsuario = hashMapOf(
             "cliente" to cliente,
             "barbeiro" to barbeiro,
+            "domicilio" to domicilio,
             "data" to data,
             "hora" to hora,
             "servico" to servico
         )
 
         db.collection("agendamento").document(cliente).set(dadosUsuario).addOnCompleteListener{
-            mensagem(view, "Agendamento realizado com sucesso!", "#FF03DAC5")
+            mensagem(view, "Agendamento realizado com sucesso!", "#FF44AF49")
             Handler(Looper.getMainLooper()).postDelayed({
                 navegar(Intent(this, Home::class.java))
             }, delayMillis.toLong())
