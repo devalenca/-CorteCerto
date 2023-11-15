@@ -4,12 +4,12 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import com.example.cortecerto.databinding.ActivityAgendamentoBinding
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
 import java.util.Calendar
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -19,15 +19,20 @@ class Agendamento : AppCompatActivity() {
     private val calendar: Calendar = Calendar.getInstance()
     private var data : String = ""
     private var hora: String = ""
-    val mAuth = FirebaseAuth.getInstance()
-    val db = FirebaseFirestore.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAgendamentoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.hide()
 
+        supportActionBar?.hide()
+        val nome = intent.extras?.getString("nome").toString()
+        val servico = intent.extras?.getString("servico").toString()
+        binding.txtServico.text = servico
+
+        Log.d("@cc/Nome", nome)
+        Log.d("@cc/Servico", servico)
 
         val datePicker = binding.dataPicker
         datePicker.setOnDateChangedListener { _, year, monthOfYear, dayOfMonth ->
@@ -65,22 +70,11 @@ class Agendamento : AppCompatActivity() {
         }
         binding.timePicker.setIs24HourView(true) //formato de 24horas
 
-
-        val editEndereco = binding.editEndereco
-        val atendimentoDomicilio = binding.domicilio
-        atendimentoDomicilio.setOnCheckedChangeListener{buttonView, isChecked ->
-            if (isChecked) {
-                editEndereco.visibility = View.VISIBLE
-            } else {
-                editEndereco.visibility = View.GONE
-            }
-        }
         binding.btnAgendar.setOnClickListener {
 
             val barbeiro1 = binding.barbeiro1
             val barbeiro2 = binding.barbeiro2
             val barbeiro3 = binding.barbeiro3
-            val endereco = binding.endereco.text.toString()
 
             when {
                 hora.isEmpty() -> {
@@ -96,19 +90,13 @@ class Agendamento : AppCompatActivity() {
 
                 }
                 barbeiro1.isChecked && data.isNotEmpty() && hora.isNotEmpty() -> {
-                    getNomeUser { nome ->
-                        salvarAgendamento(it, nome, "Jefferson", endereco, data, hora)
-                    }
+                    salvarAgendamento(it, nome!!, "Jefferson",data,hora, servico!!)
                 }
                 barbeiro2.isChecked && data.isNotEmpty() && hora.isNotEmpty() -> {
-                    getNomeUser { nome ->
-                        salvarAgendamento(it, nome, "Elizeu", endereco, data,hora)
-                    }
+                    salvarAgendamento(it, nome!!, "Elizeu",data,hora, servico!!)
                 }
                 barbeiro3.isChecked && data.isNotEmpty() && hora.isNotEmpty() -> {
-                    getNomeUser { nome ->
-                        salvarAgendamento(it, nome, "Luiza", endereco, data,hora)
-                    }
+                    salvarAgendamento(it, nome!!, "Luiza",data,hora, servico!!)
                 }
                 else -> {
                     mensagem(it, "Escolha um barbeiro!", "#FF0000")
@@ -116,32 +104,18 @@ class Agendamento : AppCompatActivity() {
             }
         }
 
-    }
+        val editEndereco = binding.editEndereco
+        val atendimentoDomicilio = binding.domicilio
 
-    private fun getNomeUser(callback: (String) -> Unit) {
-        val currentUser = mAuth.currentUser
-        if (currentUser != null) {
-            val uid = currentUser.uid
-
-            // Consulte o Firestore para obter os dados do usuário atual
-            db.collection("usuarios").document(uid).get()
-                .addOnSuccessListener { document ->
-                    if (document != null) {
-                        val nome = document.getString("nome")
-                        if (nome != null) {
-                            // Chame o callback com o nome
-                            callback(nome)
-                        }
-                    } else {
-                        println("Documento não existe")
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    println("Erro ao recuperar dados: $exception")
-                }
-
+        atendimentoDomicilio.setOnCheckedChangeListener{buttonView, isChecked ->
+            if (isChecked) {
+                editEndereco.visibility = View.VISIBLE
+            } else {
+                editEndereco.visibility = View.GONE
+            }
         }
     }
+
     private fun mensagem(view: View, mensagem:String, cor: String) {
         val snackbar = Snackbar.make(view, mensagem,Snackbar.LENGTH_LONG)
         snackbar.setBackgroundTint(Color.parseColor(cor))
@@ -149,16 +123,16 @@ class Agendamento : AppCompatActivity() {
         snackbar.show()
     }
 
-    private fun salvarAgendamento(view: View, cliente: String, barbeiro: String, domicilio: String, data: String, hora: String){
+    private fun salvarAgendamento(view: View, cliente: String, barbeiro: String, data: String, hora: String, servico: String){
 
         val db = FirebaseFirestore.getInstance()
 
         val dadosUsuario = hashMapOf(
             "cliente" to cliente,
             "barbeiro" to barbeiro,
-            "domicilio" to domicilio,
             "data" to data,
-            "hora" to hora
+            "hora" to hora,
+            "servico" to servico
         )
 
         db.collection("agendamento").document(cliente).set(dadosUsuario).addOnCompleteListener{
@@ -172,7 +146,4 @@ class Agendamento : AppCompatActivity() {
         startActivity(intent)
     }
 }
-
-
-
 

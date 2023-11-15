@@ -29,6 +29,17 @@
             android:gravity="center"
             android:layout_margin="40dp" />
 
+        <TextView
+            android:id="@+id/txtServico"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Serviço Desejado"
+            android:textSize="25sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_margin="10dp" />
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -79,31 +90,31 @@
             android:background="@color/white"
             android:timePickerMode="spinner" />
 
-    <LinearLayout
+        <LinearLayout
 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginEnd="20dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginEnd="20dp">
 
-        <CheckBox
-            android:id="@+id/domicilio"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="left"
-            android:checked="false" />
+            <CheckBox
+                android:id="@+id/domicilio"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="left"
+                android:checked="false" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="20dp"
-            android:gravity="center"
-            android:text="Deseja atendimento a domicílio?"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                android:gravity="center"
+                android:text="Deseja atendimento a domicílio?"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-    </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/editEndereco"
@@ -232,4 +243,3 @@
 
     </LinearLayout>
 </ScrollView>
-

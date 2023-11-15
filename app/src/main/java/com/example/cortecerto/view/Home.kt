@@ -3,6 +3,7 @@ package com.example.cortecerto.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.cortecerto.R
 import com.example.cortecerto.adapter.ServicosAdapter
@@ -13,6 +14,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class Home : AppCompatActivity() {
 
+    // Dentro da classe Home
+    private lateinit var servicoAtual: String // Adicione esta linha para armazenar o serviço atual
     private lateinit var binding: ActivityHomeBinding
     private lateinit var servicosAdapter: ServicosAdapter
     private val listaServicos: MutableList<Servicos> = mutableListOf()
@@ -28,7 +31,7 @@ class Home : AppCompatActivity() {
 
         getNomeUser { nome ->
             // Use a variável nome aqui
-           binding.txtNomeUsuario.text = "Bem-vindo(a), $nome"
+            binding.txtNomeUsuario.text = "Bem-vindo(a), $nome"
         }
 
         val recyclerViewServicos = binding.recyclerViewServicos
@@ -36,7 +39,25 @@ class Home : AppCompatActivity() {
         servicosAdapter = ServicosAdapter(this, listaServicos)
         recyclerViewServicos.setHasFixedSize(true)
         recyclerViewServicos.adapter = servicosAdapter
-        getServicos()
+        createServicos()
+
+        servicosAdapter.setOnItemClickListener(object : ServicosAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                // Obtenha o serviço correspondente com base na posição do clique
+                val servicoClicado = listaServicos[position]
+
+                // Armazene o serviço atual na variável servicoAtual
+                servicoAtual = servicoClicado.nome!!
+
+                // Execute a ação desejada, por exemplo, o mesmo que btnAgendar
+                val intent = Intent(this@Home, Agendamento::class.java)
+                getNomeUser { nome ->
+                    intent.putExtra("nome", nome)
+                    intent.putExtra("servico", servicoAtual)
+                    startActivity(intent) // Adicione o serviço à intent
+                }
+            }
+        })
 
         binding.btnAgendar.setOnClickListener{
             val intent = Intent(this, Agendamento::class.java)
@@ -45,6 +66,7 @@ class Home : AppCompatActivity() {
                 intent.putExtra("nome", nome)
             }
             startActivity(intent)
+
         }
     }
 
@@ -63,16 +85,16 @@ class Home : AppCompatActivity() {
                             callback(nome)
                         }
                     } else {
-                        println("Documento não existe")
+                        Log.e("@cc/Erro","Documento não existe")
                     }
                 }
                 .addOnFailureListener { exception ->
-                    println("Erro ao recuperar dados: $exception")
+                    Log.e("@cc/Erro", "Erro ao recuperar dados: $exception")
                 }
 
         }
     }
-    private fun getServicos(){
+    private fun createServicos(){
         val servico1 = Servicos(R.drawable.img1, "Corte de cabelo")
         listaServicos.add(servico1)
 
@@ -85,4 +107,6 @@ class Home : AppCompatActivity() {
         val servico4 = Servicos(R.drawable.img4, "Tratamento de cabelo")
         listaServicos.add(servico4)
     }
+
+
 }
