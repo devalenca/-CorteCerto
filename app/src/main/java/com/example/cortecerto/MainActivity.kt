@@ -36,21 +36,21 @@ class MainActivity : AppCompatActivity() {
 
             when{
                 email.isEmpty() -> {
-                    mensagem(it, "O e-mail não pode estar vazio!")
+                    mensagem(it, "O e-mail não pode estar vazio!", "#FF0000")
                 }senha.isEmpty() ->{
-                    mensagem(it, "Preencha a senha!")
+                    mensagem(it, "Preencha a senha!", "#FF0000")
                 }senha.length <=5 -> {
-                    mensagem(it, "A senha precisa ter pelo menos 6 caracteres!")
+                    mensagem(it, "A senha precisa ter pelo menos 6 caracteres!", "#FF0000")
                 }else ->{
                 auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener{ login ->
                     if (login.isSuccessful){
-                        mensagem(it, "Login realizado com sucesso!")
+                        mensagem(it, "Login realizado com sucesso!", "#FF44AF49")
                         Handler(Looper.getMainLooper()).postDelayed({
                             // Código a ser executado após o atraso
                             navegar(Intent(this, Home::class.java))
                         }, delayMillis.toLong())
                     } else {
-                        mensagem(it, "Email ou senha incorretos")
+                        mensagem(it, "Email ou senha incorretos", "#FF0000")
                     }
                     }
                 }
@@ -63,9 +63,9 @@ class MainActivity : AppCompatActivity() {
             navegar(Intent(this, Recuperacao::class.java));
         }
     }
-    private fun mensagem(view: View, mensagem: String) {
-        val snackbar = Snackbar.make(view, mensagem, Snackbar.LENGTH_LONG)
-        snackbar.setBackgroundTint(Color.parseColor("#FF0000"))
+    private fun mensagem(view: View, mensagem:String, cor: String) {
+        val snackbar = Snackbar.make(view, mensagem,Snackbar.LENGTH_LONG)
+        snackbar.setBackgroundTint(Color.parseColor(cor))
         snackbar.setTextColor(Color.parseColor("#FFFFFF"))
         snackbar.show()
     }

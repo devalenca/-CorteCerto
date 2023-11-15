@@ -92,6 +92,15 @@ class Agendamento : AppCompatActivity() {
                     mensagem(it, "Coloque uma data!", "#FF0000")
 
                 }
+                barbeiro1.isChecked && barbeiro2.isChecked && barbeiro3.isChecked -> {
+                    mensagem(it, "Selecione apenas 1 barbeiro", "#FF0000")
+                }
+                barbeiro1.isChecked && barbeiro2.isChecked  -> {
+                    mensagem(it, "Selecione apenas 1 barbeiro", "#FF0000")
+                }
+                barbeiro2.isChecked && barbeiro3.isChecked -> {
+                    mensagem(it, "Selecione apenas 1 barbeiro", "#FF0000")
+                }
                 barbeiro1.isChecked && data.isNotEmpty() && hora.isNotEmpty() -> {
                     salvarAgendamento(it, nome, "Jefferson",endereco,data,hora, servico!!)
                 }
