@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         binding.btnLogin.setOnClickListener{
-            val delayMillis = 1500 // 2000 milissegundos = 1,5 segundos
+            val delayMillis = 1500 // 1500 milissegundos = 1,5 segundos
             val email = binding.editEmail.text.toString()
             val senha = binding.editSenha.text.toString()
 

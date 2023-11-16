@@ -14,8 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class Home : AppCompatActivity() {
 
-    // Dentro da classe Home
-    private lateinit var servicoAtual: String // Adicione esta linha para armazenar o serviço atual
+    private lateinit var servicoAtual: String
     private lateinit var binding: ActivityHomeBinding
     private lateinit var servicosAdapter: ServicosAdapter
     private val listaServicos: MutableList<Servicos> = mutableListOf()
@@ -28,9 +27,7 @@ class Home : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-
         getNomeUser { nome ->
-            // Use a variável nome aqui
             binding.txtNomeUsuario.text = "Bem-vindo(a), $nome"
         }
 
@@ -43,30 +40,20 @@ class Home : AppCompatActivity() {
 
         servicosAdapter.setOnItemClickListener(object : ServicosAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
-                // Obtenha o serviço correspondente com base na posição do clique
+
                 val servicoClicado = listaServicos[position]
 
-                // Armazene o serviço atual na variável servicoAtual
                 servicoAtual = servicoClicado.nome!!
 
-                // Execute a ação desejada, por exemplo, o mesmo que btnAgendar
                 val intent = Intent(this@Home, Agendamento::class.java)
                 getNomeUser { nome ->
                     intent.putExtra("nome", nome)
                     intent.putExtra("servico", servicoAtual)
-                    startActivity(intent) // Adicione o serviço à intent
+                    startActivity(intent)
                 }
             }
         })
 
-        binding.btnAgendar.setOnClickListener{
-            val intent = Intent(this, Agendamento::class.java)
-            getNomeUser { nome ->
-                // Use a variável nome aqui
-                intent.putExtra("nome", nome)
-            }
-            startActivity(intent)
-        }
         binding.btnDeslogar.setOnClickListener{
             try {
                 mAuth.signOut()
@@ -76,7 +63,6 @@ class Home : AppCompatActivity() {
             }
         }
     }
-
     private fun getNomeUser(callback: (String) -> Unit) {
         val currentUser = mAuth.currentUser
         if (currentUser != null) {
@@ -98,7 +84,6 @@ class Home : AppCompatActivity() {
                 .addOnFailureListener { exception ->
                     Log.e("@cc/Erro", "Erro ao recuperar dados: $exception")
                 }
-
         }
     }
     private fun createServicos(){
@@ -108,12 +93,10 @@ class Home : AppCompatActivity() {
         val servico2 = Servicos(R.drawable.img2, "Corte de barba")
         listaServicos.add(servico2)
 
-        val servico3 = Servicos(R.drawable.img3, "Lavagem de cabelo")
+        val servico3 = Servicos(R.drawable.img3, "Sobrancelha")
         listaServicos.add(servico3)
 
-        val servico4 = Servicos(R.drawable.img4, "Tratamento de cabelo")
+        val servico4 = Servicos(R.drawable.img4, "Tratamento com Química")
         listaServicos.add(servico4)
     }
-
-
 }

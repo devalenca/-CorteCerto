@@ -77,17 +77,17 @@ class Agendamento : AppCompatActivity() {
             val barbeiro1 = binding.barbeiro1
             val barbeiro2 = binding.barbeiro2
             val barbeiro3 = binding.barbeiro3
+            val barbeiro4 = binding.barbeiro4
+            val barbeiro5 = binding.barbeiro5
             val endereco = binding.endereco.text.toString()
 
             when {
                 hora.isEmpty() -> {
                     mensagem(it, "Preencha o horário", "#FF0000")
                 }
-
                 hora < "8:00" && hora > "19:00" -> {
-                    mensagem(it, "Corte Certo esta fechado - horário de atendimento das 08:00 às 19:00!", "#FF0000")
+                    mensagem(it, "Astro Barber esta fechado - horário de atendimento das 08:00 às 19:00!", "#FF0000")
                 }
-
                 data.isEmpty() -> {
                     mensagem(it, "Coloque uma data!", "#FF0000")
 
@@ -109,6 +109,12 @@ class Agendamento : AppCompatActivity() {
                 }
                 barbeiro3.isChecked && data.isNotEmpty() && hora.isNotEmpty() -> {
                     salvarAgendamento(it, nome!!, "Luiza",endereco,data,hora, servico!!)
+                }
+                barbeiro4.isChecked && data.isNotEmpty() && hora.isNotEmpty() -> {
+                    salvarAgendamento(it, nome!!, "Gabriel",endereco,data,hora, servico!!)
+                }
+                barbeiro5.isChecked && data.isNotEmpty() && hora.isNotEmpty() -> {
+                    salvarAgendamento(it, nome!!, "Matheus",endereco,data,hora, servico!!)
                 }
                 else -> {
                     mensagem(it, "Escolha um barbeiro!", "#FF0000")

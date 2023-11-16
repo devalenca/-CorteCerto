@@ -21,6 +21,8 @@ import com.example.cortecerto.view.Home
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import android.os.Handler
+import android.os.Looper
 
 class Cadastro: AppCompatActivity() {
 
@@ -42,18 +44,22 @@ class Cadastro: AppCompatActivity() {
 
             when{
                 nome.isEmpty() -> {
-                    mensagem(it, "O nome não pode estar vazio!")}
+                    mensagem(it, "O nome não pode estar vazio!", "#FF0000")}
                 email.isEmpty() -> {
-                    mensagem(it, "O e-mail não pode estar vazio!")
+                    mensagem(it, "O e-mail não pode estar vazio!", "#FF0000")
                 }senha.isEmpty() ->{
-                mensagem(it, "Preencha a senha!")
+                mensagem(it, "Preencha a senha!", "#FF0000")
             }senha.length <=5 -> {
-                mensagem(it, "A senha precisa ter pelo menos 6 caracteres!")
+                mensagem(it, "A senha precisa ter pelo menos 6 caracteres!", "#FF0000")
             }else -> {
                 auth.createUserWithEmailAndPassword(email, senha).addOnCompleteListener{ cadastro ->
                     if (cadastro.isSuccessful){
-                        mensagem(it, "Cadastro realizado com sucesso!")
-                        navegarPraHome(nome)
+                        val delayMillis = 1500 // 2000 milissegundos = 1,5 segundos
+                        mensagem(it, "Login realizado com sucesso!", "#FF44AF49")
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            // Código a ser executado após o atraso
+                            navegarPraHome(nome)
+                        }, delayMillis.toLong())
                         val currentUser = auth.currentUser
                         if (currentUser != null) {
 
@@ -61,7 +67,7 @@ class Cadastro: AppCompatActivity() {
                             salvarUsuario(it, nome, email, uid)
 
                         } else {
-                            mensagem(it, "Erro ao puxar UID")
+                            mensagem(it, "Erro ao puxar UID", "#FF0000")
                         }
                         navegarPraHome(nome)
                     }
@@ -73,9 +79,9 @@ class Cadastro: AppCompatActivity() {
             }
         }
     }
-    private fun mensagem(view: View, mensagem: String) {
-        val snackbar = Snackbar.make(view, mensagem, Snackbar.LENGTH_LONG)
-        snackbar.setBackgroundTint(Color.parseColor("#FF0000"))
+    private fun mensagem(view: View, mensagem:String, cor: String) {
+        val snackbar = Snackbar.make(view, mensagem,Snackbar.LENGTH_LONG)
+        snackbar.setBackgroundTint(Color.parseColor(cor))
         snackbar.setTextColor(Color.parseColor("#FFFFFF"))
         snackbar.show()
     }
@@ -89,9 +95,9 @@ class Cadastro: AppCompatActivity() {
         )
 
         db.collection("usuarios").document(id).set(dadosUsuario).addOnCompleteListener{
-            mensagem(view, "Cadastrado no banco de dados!")
+            mensagem(view, "Cadastrado no banco de dados!", "#FF44AF49")
         }.addOnFailureListener{
-            mensagem(view, "Erro no servidor")
+            mensagem(view, "Erro no servidor", "#FF0000")
         }
 
     }
