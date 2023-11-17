@@ -54,11 +54,10 @@ class Cadastro: AppCompatActivity() {
             }else -> {
                 auth.createUserWithEmailAndPassword(email, senha).addOnCompleteListener{ cadastro ->
                     if (cadastro.isSuccessful){
-                        val delayMillis = 1500 // 2000 milissegundos = 1,5 segundos
-                        mensagem(it, "Login realizado com sucesso!", "#FF44AF49")
+                        val delayMillis = 1500 // 1500 milissegundos = 1,5 segundos
+                        mensagem(it, "Cadastrado no banco de dados!", "#FF44AF49")
                         Handler(Looper.getMainLooper()).postDelayed({
-                            // Código a ser executado após o atraso
-                            navegarPraHome(nome)
+                            navegar(Intent(this, Home::class.java))
                         }, delayMillis.toLong())
                         val currentUser = auth.currentUser
                         if (currentUser != null) {
@@ -69,7 +68,6 @@ class Cadastro: AppCompatActivity() {
                         } else {
                             mensagem(it, "Erro ao puxar UID", "#FF0000")
                         }
-                        navegarPraHome(nome)
                     }
                 }
 
@@ -95,16 +93,13 @@ class Cadastro: AppCompatActivity() {
         )
 
         db.collection("usuarios").document(id).set(dadosUsuario).addOnCompleteListener{
-            mensagem(view, "Cadastrado no banco de dados!", "#FF44AF49")
         }.addOnFailureListener{
             mensagem(view, "Erro no servidor", "#FF0000")
         }
 
     }
 
-    private fun navegarPraHome(nome: String){
-        val intent = Intent(this, Home::class.java)
-        intent.putExtra("nome", nome)
+    private fun navegar(intent: Intent){
         startActivity(intent)
     }
 }

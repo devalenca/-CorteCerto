@@ -77,8 +77,6 @@ class Agendamento : AppCompatActivity() {
             val barbeiro1 = binding.barbeiro1
             val barbeiro2 = binding.barbeiro2
             val barbeiro3 = binding.barbeiro3
-            val barbeiro4 = binding.barbeiro4
-            val barbeiro5 = binding.barbeiro5
             val endereco = binding.endereco.text.toString()
 
             when {
@@ -109,12 +107,6 @@ class Agendamento : AppCompatActivity() {
                 }
                 barbeiro3.isChecked && data.isNotEmpty() && hora.isNotEmpty() -> {
                     salvarAgendamento(it, nome!!, "Luiza",endereco,data,hora, servico!!)
-                }
-                barbeiro4.isChecked && data.isNotEmpty() && hora.isNotEmpty() -> {
-                    salvarAgendamento(it, nome!!, "Gabriel",endereco,data,hora, servico!!)
-                }
-                barbeiro5.isChecked && data.isNotEmpty() && hora.isNotEmpty() -> {
-                    salvarAgendamento(it, nome!!, "Matheus",endereco,data,hora, servico!!)
                 }
                 else -> {
                     mensagem(it, "Escolha um barbeiro!", "#FF0000")
